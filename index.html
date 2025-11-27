@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡SOS! ¿Tus niños no sueltan el celular? | Kit Biblia con Alegría 7 en 1</title>
+    
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Fuente principal: Inter */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            
+            /* Fondo: Gradiente cálido y alegre */
+            background: linear-gradient(180deg, #fffbeb 0%, #fff1f2 100%);
+            min-height: 100vh;
+            
+            color: #333333;
+            /* Espacio inferior para compensar la barra CTA fija */
+            padding-bottom: 90px; 
+        }
+
+        /* Estilos generales de botones y secciones */
+        .cta-button {
+            background-image: linear-gradient(to right, #ef4444, #dc2626);
+            transition: all 0.3s ease;
+        }
+        .cta-button:hover {
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.7);
+            transform: translateY(-2px);
+        }
+        .product-card {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+            background-color: #f9fafb;
+        }
+        .timer-bg {
+            background-color: #fef3c7; 
+            color: #d97706;
+            overflow: hidden;
+        }
+        
+        /* Animación de Marquee (Texto deslizante) */
+        .marquee-track {
+            display: flex;
+            width: max-content;
+            animation: scroll 20s linear infinite;
+        }
+        
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .marquee-item {
+            padding: 0 2rem;
+            font-weight: 900;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            color: #dc2626;
+        }
+        
+        .pack-seal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #3b82f6;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transform: rotate(10deg);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        /* Estilos para el acordeón FAQ */
+        .faq-details summary {
+            cursor: pointer;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid #e5e7eb;
+            list-style: none;
+        }
+        .faq-details summary::-webkit-details-marker {
+            display: none;
+        }
+        .faq-details summary::after {
+            content: '▼';
+            float: right;
+            transition: transform 0.3s;
+        }
+        .faq-details[open] summary::after {
+            content: '▲';
+            transform: rotate(0deg);
+        }
+        .faq-details[open] summary {
+            border-bottom: none;
+        }
+
+        /* Botón de compra verde (con efecto 3D) */
+        .green-btn {
+            background: linear-gradient(to bottom, #4ade80, #22c55e);
+            border-bottom: 4px solid #15803d; 
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            transition: transform 0.1s, border-bottom 0.1s;
+        }
+        .green-btn:active {
+            transform: translateY(2px);
+            border-bottom: 0px solid transparent;
+        }
+        
+        /* --- CORRECCIÓN: ESTILO PARA EL BOTÓN DE WHATSAPP --- */
+        .whatsapp-button {
+            /* Colores de WhatsApp (Verde degradado) */
+            background: linear-gradient(to bottom, #4ADE80, #16A34A); 
+            border-bottom: 4px solid #065F46; /* Borde oscuro para efecto 3D */
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .whatsapp-button:hover {
+            /* Degradado más oscuro al pasar el ratón */
+            background: linear-gradient(to bottom, #22C55E, #15803D); 
+            border-bottom: 4px solid #064E3B;
+        }
+        .whatsapp-button:active {
+            /* Hundimiento del botón al presionar */
+            transform: translateY(2px);
+            border-bottom: 2px solid #065F46;
+        }
+
+        /* --- OPTIMIZACIÓN DE RENDIMIENTO: CARRUSELES CON SCROLL-SNAP --- */
+        .carousel-container {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+            max-width: 100%;
+            /* CLAVE: Activa el desplazamiento nativo (Muy rápido en móvil) */
+            scroll-snap-type: x mandatory; 
+        }
+        .carousel-container::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+        .carousel-item {
+            /* CLAVE: Asegura el snapping */
+            scroll-snap-align: center;
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+
+        /* Estilo específico para el carrusel de libros (scrollable cards) */
+        .book-carousel {
+            /* Reutiliza las propiedades de scroll-snap */
+        }
+        .book-item {
+            scroll-snap-align: center; 
+            flex-shrink: 0;
+            width: 250px; /* Ancho fijo para las tarjetas en el carrusel */
+        }
+        
+        /* Ocultar botones de navegación en dispositivos pequeños para priorizar el swipe */
+        @media (max-width: 768px) {
+            .book-nav-btn {
+                display: none !important;
+            }
+        }
+        
+        /* --- CSS PARA SOLAPA FIJA INFERIOR (COMPACTO Y ANIMADO) --- */
+        .sticky-footer-cta {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #fef2f2; /* Fondo de Solapa: Rojo muy claro */
+            border-top: 4px solid #ef4444; /* Borde superior rojo fuerte */
+            box-shadow: 0 -4px 15px rgba(239, 68, 68, 0.3); /* Sombra rojiza */
+            z-index: 100; 
+            padding: 0.75rem; /* Ajuste el padding para hacerlo más compacto */
+            
+            /* PROPIEDADES DE ANIMACIÓN */
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.5, 1.2); 
+        }
+        
+        /* CLASE INICIAL OCULTA */
+        .slide-in-hidden {
+            transform: translateY(100%); 
+        }
+        
+        /* Estilos para las tarjetas de testimonio */
+        .testimonial-card {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-left: 5px solid #ef4444;
+        }
+        .star-rating {
+            font-size: 1rem;
+            color: #facc15; 
+            margin-bottom: 0.25rem;
+        }
+        .reviewer-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+    </style>
+
+    <!-- INICIO: BLOQUE DE CÓDIGO PARA META PÍXEL (CONFIRMADO) -->
+    <!-- ID del Píxel "biblia": 739158198439332 -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        
+        // ID del Píxel actualizado al ID "biblia"
+        fbq('init', '739158198439332'); 
+        
+        // EVENTO ESTÁNDAR: PageView (Se dispara siempre que la página carga)
+        fbq('track', 'PageView'); 
+    </script>
+    <noscript>
+        <!-- ID del Píxel actualizado al ID "biblia" -->
+        <img height="1" width="1" style="display:none"
+             src="https://www.facebook.com/tr?id=739158198439332&ev=PageView&noscript=1"
+        />
+    </noscript>
+    <!-- FIN: BLOQUE DE CÓDIGO PARA META PÍXEL -->
+
+</head>
+<body>
+
+    <!-- BARRA SUPERIOR (YA NO ES FIJA, AHORA ES NORMAL) -->
+    <header class="w-full z-50 shadow-lg relative">
+        <div class="timer-bg py-3 border-b border-yellow-500">
+            <div class="marquee-track">
+                <!-- Contenido duplicado para asegurar el loop infinito sin cortes -->
+                <div class="marquee-item">
+                    ⚡ ACCESO INMEDIATO POR E-MAIL <span class="mx-3">🔒</span> PAGO 100% SEGURO
+                </div>
+                <div class="marquee-item">
+                    ⚡ ACCESO INMEDIATO POR E-MAIL <span class="mx-3">🔒</span> PAGO 100% SEGURO
+                </div>
+                <div class="marquee-item">
+                    ⚡ ACCESO INMEDIATO POR E-MAIL <span class="mx-3">🔒</span> PAGO 100% SEGURO
+                </div>
+                <div class="marquee-item">
+                    ⚡ ACCESO INMEDIATO POR E-MAIL <span class="mx-3">🔒</span> PAGO 100% SEGURO
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- REDUCIDO: Ajustado padding en main y secciones -->
+    <main class="max-w-4xl mx-auto p-3 md:p-6">
+
+        <!-- SECCIÓN DE CABECERA (HERO) - MÁS COMPACTO -->
+        <section class="text-center mb-8">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-red-500 mb-3 leading-tight">
+                ¿Tus niños no se despegan del celular? 📱😩
+            </h1>
+            
+            <p class="text-base md:text-lg font-semibold text-gray-700 max-w-2xl mx-auto mb-6">
+                El Kit 7 en 1 con juegos, colorear y devocionales para que tus hijos amen la Biblia. ¡La solución <span class="text-red-600 font-bold">fácil y divertida</span> contra el abuso del celular!
+            </p>
+            
+
+            <!-- CONTENEDOR PRINCIPAL DEL PRODUCTO -->
+            <div class="bg-gray-100 p-4 rounded-xl shadow-2xl border-2 border-red-500 relative overflow-hidden">
+                
+                <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">
+                    KIT BIBLIA CON ALEGRÍA: Fórmula 7 en 1
+                </h1>
+                
+                <p class="text-base md:text-lg text-red-600 mb-4">La Manera <span class="font-extrabold">Más Sencilla y Efectiva</span> de Implantar Valores.</p>
+                
+                <!-- IMAGEN -->
+                <div class="mt-4 relative mx-auto w-full max-w-sm mb-6">
+                    <img src="https://i.imgur.com/aM2oGnl.png"
+                         alt="Kit Biblia con Alegría: 7 Libros Digitales"
+                         class="w-full h-auto rounded-lg shadow-lg"
+                         title="Imagen de Producto Principal: Kit Biblia con Alegría."
+                    >
+                    <span class="pack-seal">KIT 7 EN 1</span>
+                </div>
+                
+                <!-- LISTA DE BENEFICIOS -->
+                <ul class="text-base text-gray-700 space-y-1 mt-6 mb-4 text-center max-w-lg mx-auto">
+                    <li class="flex items-center justify-center"><span class="mr-2 text-blue-500">📘</span> Historias bíblicas sencillas e ilustradas.</li>
+                    <li class="flex items-center justify-center"><span class="mr-2 text-green-500">🎨</span> Actividades y juegos creativos.</li>
+                    <li class="flex items-center justify-center"><span class="mr-2 text-purple-500">👨‍👩‍👧‍👦</span> Ideal para familias, maestros y líderes.</li>
+                    <li class="flex items-center justify-center"><span class="mr-2 text-yellow-500">⚡</span> Descarga inmediata: ¡Empieza hoy!</li>
+                </ul>
+
+                <!-- CITA -->
+                <p class="text-lg font-semibold text-gray-800 italic mb-6">
+                    "La manera más sencilla de acercar a tus hijos a la Biblia con alegría y creatividad."
+                </p>
+
+                <!-- SECCIÓN DE OFERTA PRINCIPAL -->
+                <div class="bg-[#fcfcf7] p-3 md:p-4 rounded-xl shadow-xl border border-gray-200 max-w-md mx-auto mt-6 relative">
+                    
+                    <!-- Precios -->
+                    <div class="mb-4 text-center">
+                        <p class="text-base text-gray-500 line-through font-medium mb-0.5">
+                            Precio Regular: $50 USD
+                        </p>
+                        <p class="text-2xl font-extrabold text-red-700">
+                            Precio Lanzamiento: 
+                            <span class="text-3xl font-black text-red-600 whitespace-nowrap">$6 USD</span>
+                        </p>
+                    </div>
+
+                    <!-- Botón Verde -->
+                    <a id="checkout-button" href="https://pay.hotmart.com/S102871118U?bid=1762797792657" target="_blank" class="block w-full green-btn text-white font-bold text-lg py-3 rounded-full text-center uppercase tracking-wide mb-4 hover:brightness-110">
+                        Agregar al carrito
+                    </a>
+                    
+                    <!-- INICIO: CÓDIGO PARA EVENTO 'INITIATE CHECKOUT' -->
+                    <script>
+                        document.getElementById('checkout-button').addEventListener('click', function() {
+                            if (typeof fbq === 'function') {
+                                fbq('track', 'InitiateCheckout', {
+                                    content_name: 'Kit Biblia con Alegría (Principal)',
+                                    content_category: 'Ebook',
+                                    content_ids: ['KIT001'],
+                                    value: 6.00,
+                                    currency: 'USD'
+                                });
+                            }
+                        });
+                    </script>
+                    <!-- FIN: CÓDIGO PARA EVENTO 'INITIATE CHECKOUT' -->
+
+
+                    <!-- Garantía y Confianza -->
+                    <div class="border-t border-gray-200 pt-3 mb-3">
+                        <div class="flex items-start gap-2">
+                            <div class="mt-1 border-2 border-gray-400 rounded w-4 h-4 flex items-center justify-center text-gray-400 text-xs flex-shrink-0">✓</div>
+                            <p class="text-xs text-gray-600 text-left leading-snug">
+                                <span class="font-bold text-gray-700">Garantía "Biblia con Alegría"</span> — 7 días para enamorarte del kit o te devolvemos tu dinero.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Badge de Confianza Estilo MercadoLíder -->
+                    <div class="trust-badge p-3 bg-white">
+                        <div class="flex items-center gap-2 mb-1">
+                            <svg class="w-5 h-5 text-green-500 fill-current" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                            <div>
+                                <p class="text-green-600 font-bold text-sm leading-none">Vendedor Verificado</p>
+                                <p class="text-[10px] text-gray-400 mt-0.5">¡Compra 100% Segura!</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Barras de reputación simuladas -->
+                        <div class="flex justify-between items-center gap-2 mt-3 text-center">
+                            <div class="flex-1">
+                                <p class="font-bold text-gray-800 text-xs">+100</p>
+                                <p class="text-[9px] text-gray-500">Ventas</p>
+                                <div class="h-1 w-full bg-pink-200 mt-1 rounded-full"></div>
+                            </div>
+                            <div class="flex-1">
+                                <svg class="w-3 h-3 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+                                <p class="text-[9px] text-gray-500 mt-1">Soporte Rápido</p>
+                                <div class="h-1 w-full bg-yellow-200 mt-1 rounded-full"></div>
+                            </div>
+                            <div class="flex-1">
+                                <svg class="w-3 h-3 mx-auto text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                <p class="text-[9px] text-gray-500 mt-1">Entrega Ya</p>
+                                <div class="h-1 w-full bg-green-500 mt-1 rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                
+            </div>
+        </section>
+
+        
+
+<section class="mb-12">
+            <h2 class="text-3xl font-bold text-center mb-8 text-red-700">
+                🎁 EL KIT COMPLETO BIBLIA CON ALEGRÍA: 7 Libros
+            </h2>
+            <p class="text-center text-lg text-gray-600 mb-10">
+                Olvídate de buscar, de imprimir, de improvisar. Aquí está el arsenal completo de herramientas que recibirás HOY:
+            </p>
+            
+            <!-- CONTENEDOR RELATIVO PARA EL CARRUSEL DE LIBROS CON FLECHAS -->
+            <div class="relative max-w-4xl mx-auto px-4 md:px-0">
+
+                <!-- INICIO: CARRUSEL DE LIBROS (Scroll-Snap activado) -->
+                <div id="book-slider" class="book-carousel flex overflow-x-scroll space-x-6 pb-2 carousel-container">
+                    
+                    <!-- Libro 1 -->
+                    <div class="book-card book-item">
+                        <div class="book-image-container">
+                            <img src="https://i.imgur.com/pzuamwQ.png"
+                                 alt="Técnicas Creativas"
+                                 class="w-full h-auto rounded-lg shadow-md border-2 border-red-100"
+                            >
+                        </div>
+                        <h3 class="text-base font-bold text-red-700 mb-1">Técnicas Creativas de Aprendizaje Bíblico</h3>
+                        <p class="text-xs text-gray-600 leading-snug">
+                            Guía práctica con +12 técnicas (títeres, dramatizaciones, arte) para líderes y maestros.
+                        </p>
+                    </div>
+
+                    <!-- Libro 2 -->
+                    <div class="book-card book-item">
+                        <div class="book-image-container">
+                            <img src="https://i.imgur.com/NLgFHyT.png"
+                                 alt="Personajes Emblemáticos"
+                                 class="w-full h-auto rounded-lg shadow-md border-2 border-red-100"
+                            >
+                        </div>
+                        <h3 class="text-base font-bold text-red-700 mb-1">Personajes Emblemáticos de la Biblia</h3>
+                        <p class="text-xs text-gray-600 leading-snug">
+                            Recorrido narrativo y visual por la vida de los héroes de la fe, en lenguaje para niños.
+                        </p>
+                    </div>
+
+                    <!-- Libro 3 -->
+                    <div class="book-card book-item">
+                        <div class="book-image-container">
+                            <img src="https://i.imgur.com/2GH5lWB.png"
+                                 alt="Juegos para Memorización"
+                                 class="w-full h-auto rounded-lg shadow-md border-2 border-red-100"
+                            >
+                        </div>
+                        <h3 class="text-base font-bold text-red-700 mb-1">+25 Juegos Creativos para la Memorización Bíblica</h3>
+                        <p class="text-xs text-gray-600 leading-snug">
+                            Colección de actividades activas (relevos, rap, pintura) para grabar versículos en la mente.
+                        </p>
+                    </div>
+
+                    <!-- Libro 4 -->
+                    <div class="book-card book-item">
+                        <div class="book-image-container">
+                            <img src="https://i.imgur.com/z16lIkr.png"
+                                 alt="Historias Bíblicas Cuento"
+                                 class="w-full h-auto rounded-lg shadow-md border-2 border-red-100"
+                            >
+                        </div>
+                        <h3 class="text-base font-bold text-red-700 mb-1">Historias Bíblicas: Relatos Sencillos y Emocionantes</h3>
+                        <p class="text-xs text-gray-600 leading-snug">
+                            Relatos bíblicos contados de forma cálida, simple y emocionante en formato de cuento infantil.
+                        </p>
+                    </div>
+
+                    <!-- Libro 5 -->
+                    <div class="book-card book-item">
+                        <div class="book-image-container">
+                            <img src="https://i.imgur.com/CxpAdju.png"
+                                 alt="Historias para Colorear"
+                                 class="w-full h-auto rounded-lg shadow-md border-2 border-red-100"
+                            >
+                        </div>
+                        <h3 class="text-base font-bold text-red-700 mb-1">Historias Bíblicas para Colorear: Arte y Enseñanza</h3>
+                        <p class="text-xs text-gray-600 leading-snug">
+                            Libro con historias y grandes ilustraciones listas para que los niños las rellenen de color.
+                        </p>
+                    </div>
+
+                    <!-- Libro 6 -->
+                    <div class="book-card book-item">
+                        <div class="book-image-container">
+                            <img src="https://i.imgur.com/gO8AUZd.png"
+                                 alt="Luz y Sabiduría"
+                                 class="w-full h-auto rounded-lg shadow-md border-2 border-red-100"
+                            >
+                        </div>
+                        <h3 class="text-base font-bold text-red-700 mb-1">Historias de la Biblia: Luz y Sabiduría (Interactiva)</h3>
+                        <p class="text-xs text-gray-600 leading-snug">
+                            Recurso interactivo que combina cuentos ilustrados con actividades creativas y de reflexión.
+                        </p>
+                    </div>
+
+                    <!-- Libro 7 -->
+                    <div class="book-card book-item">
+                        <div class="book-image-container">
+                            <img src="https://i.imgur.com/TqZQgK0.png"
+                                 alt="Estrategias para Padres"
+                                 class="w-full h-auto rounded-lg shadow-md border-2 border-red-100"
+                            >
+                        </div>
+                        <h3 class="text-base font-bold text-red-700 mb-1">10 Estrategias Sencillas para Sembrar la Fe en Casa</h3>
+                        <p class="text-xs text-gray-600 leading-snug">
+                            Guía práctica para padres con 10 ideas creativas para fomentar la fe en el día a día del hogar.
+                        </p>
+                    </div>
+
+                </div>
+                <!-- FIN: CARRUSEL DE LIBROS -->
+                
+                <!-- Flechas de navegación (ocultas en móvil) -->
+                <button id="prev-book-btn" class="book-nav-btn hidden md:block absolute top-1/2 left-0 transform -translate-x-full -translate-y-1/2 bg-red-600 text-white p-3 rounded-full shadow-lg hover:bg-red-700 transition duration-300 z-10 opacity-80 hover:opacity-100 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                <button id="next-book-btn" class="book-nav-btn hidden md:block absolute top-1/2 right-0 transform translate-x-full -translate-y-1/2 bg-red-600 text-white p-3 rounded-full shadow-lg hover:bg-red-700 transition duration-300 z-10 opacity-80 hover:opacity-100 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+                
+            </div>
+        </section>
+        
+        
+        <!-- INICIO: SECCIÓN NUEVA - VISTAZO ADENTRO -->
+        <section class="mb-12 pt-8">
+            <h2 class="text-3xl font-bold text-center mb-6 text-blue-700">
+                🔍 Un Vistazo Adentro: ¡Mira la calidad de lo que recibirás!
+            </h2>
+            
+            <p class="text-center text-lg text-gray-600 mb-8 max-w-2xl mx-auto font-bold">
+                Estas son solo algunas páginas de muestra. El Kit 7 en 1 incluye cientos de páginas con diseños coloridos, actividades y guías completas. ¡Desliza para ver la calidad!
+            </p>
+
+            <div class="relative max-w-4xl mx-auto">
+                
+                <!-- CARRUSEL DE VISTAS INTERNAS (Scroll-Snap activado) -->
+                <div id="inner-view-carousel" class="flex overflow-x-scroll scroll-smooth rounded-xl shadow-2xl border-4 border-blue-200 aspect-video carousel-container">
+                    
+                    <!-- Imágenes de vista interior (Originalmente 13. Eliminadas 6 y 11, quedan 11) -->
+                    <!-- Imagen 1 -->
+                    <div class="carousel-item p-4">
+                        <img src="https://i.imgur.com/VbFOHHQ.png" alt="Vista interior: Libro de actividades" class="w-full h-full rounded-lg object-contain">
+                    </div>
+                    <!-- Imagen 2 -->
+                    <div class="carousel-item p-4">
+                        <img src="https://i.imgur.com/ycvycgo.png" alt="Vista interior: Personajes bíblicos" class="w-full h-full rounded-lg object-contain">
+                    </div>
+                    <!-- Imagen 3 -->
+                    <div class="carousel-item p-4">
+                        <img src="https://i.imgur.com/uJNhnzL.png" alt="Vista interior: Actividad de colorear" class="w-full h-full rounded-lg object-contain">
+                    </div>
+                    <!-- Imagen 4 -->
+                    <div class="carousel-item p-4">
+                        <img src="https://i.imgur.com/WmkYxJ2.png" alt="Vista interior: Historia bíblica ilustrada" class="w-full h-full rounded-lg object-contain">
+                    </div>
+                    <!-- Imagen 5 -->
+                    <div class="carousel-item p-4">
+                        <img src="https://i.imgur.com/0zfRpfp.png" alt="Vista interior: Guía para padres" class="w-full h-full rounded-lg object-contain">
+                    </div>
+                    <!-- Imagen 6 (Originalmente 7) -->
+                    <div class="carousel-item p-4">
+                        <img src="https://i.imgur.com/DHXzdQ7.png" alt="Vista interior: Actividad de aprendizaje" class="w-full h-full rounded-lg object-contain">
+                    </div>
+                    <!-- Imagen 7 (Originalmente 8) -->
+                    <div class="carousel-item p-4">
+                        <img src="https://i.imgur.com/jibm5dH.png" alt="Vista interior: Página de colorear avanzada" class="w-full h-full rounded-lg object-contain">
+                    </div>
+                    <!-- Imagen 8 (Originalmente 9) -->
+                    <div class="carousel-item p-4">
+                        <img src="https://i.imgur.com/48FyJ3x.png" alt="Vista interior: Introducción a la historia" class="w-full h-full rounded-lg object-contain">
+                    </div>
+                    <!-- Imagen 9 (Originalmente 10) -->
+                    <div class="carousel-item p-4">
+                        <img src="https://i.imgur.com/ROMfvKZ.png" alt="Vista interior: Ilustración a doble página" class="w-full h-full rounded-lg object-contain">
+                    </div>
+                    <!-- Imagen 10 (Originalmente 12) -->
+                    <div class="carousel-item p-4">
+                        <img src="https://i.imgur.com/DBMVFoe.png" alt="Vista interior: Actividad de manualidades" class="w-full h-full rounded-lg object-contain">
+                    </div>
+                    <!-- Imagen 11 (Originalmente 13) -->
+                    <div class="carousel-item p-4">
+                        <img src="https://i.imgur.com/h3lB5Gk.png" alt="Vista interior: Cuento con ilustraciones modernas" class="w-full h-full rounded-lg object-contain">
+                    </div>
+
+                </div>
+
+                <!-- Botones de navegación para el segundo carrusel (Azules) -->
+                <button id="prev-inner-btn" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition duration-300 z-10 opacity-70 hover:opacity-100 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                <button id="next-inner-btn" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition duration-300 z-10 opacity-70 hover:opacity-100 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+                
+                <!-- Puntos de navegación para el segundo carrusel -->
+                <div id="inner-carousel-dots" class="flex justify-center space-x-2 mt-4">
+                </div>
+            </div>
+        </section>
+        <!-- FIN: SECCIÓN NUEVA - VISTAZO ADENTRO -->
+
+
+        <!-- INICIO: Sección de Comparación (Problema vs. Solución) - MODIFICADA PARA MÓVIL -->
+        <section class="mb-12 pt-4">
+            <h2 class="text-3xl font-bold text-center mb-8 text-red-700">
+                El Cambio Que Verás: Antes y Después del Kit
+            </h2>
+            
+            <!-- CONTENEDOR FLEXIBLE CON SCROLL HORIZONTAL PARA MÓVIL (Rendimiento Alto) -->
+            <div class="max-w-4xl mx-auto overflow-x-auto carousel-container">
+                <!-- Se usa flex-row y min-w para que las dos tarjetas se muestren lado a lado y el usuario pueda deslizar -->
+                <div class="flex flex-row gap-4 md:gap-6 justify-center pb-2" style="min-width: 600px;"> 
+                    
+                    <div class="w-1/2 product-card rounded-xl p-2 md:p-3 border-4 border-gray-200 book-item" style="min-width: 48%;">
+                        <img src="https://i.imgur.com/25z27ID.png" 
+                             alt="Resultados: Antes del Kit vs Después del Kit" 
+                             class="w-full h-auto rounded-lg"
+                        >
+                    </div>
+
+                    <div class="w-1/2 product-card rounded-xl p-2 md:p-3 border-4 border-gray-200 book-item" style="min-width: 48%;">
+                        <img src="https://i.imgur.com/2eJcPpX.png" 
+                             alt="Comparación: La vida de tus hijos sin el kit y con el kit" 
+                             class="w-full h-auto rounded-lg"
+                        >
+                    </div>
+                    
+                </div>
+            </div>
+            <!-- FIN: CONTENEDOR FLEXIBLE -->
+            
+            <p class="text-center text-lg text-gray-600 mt-6 max-w-2xl mx-auto font-medium">
+                Deja de pelear por el tiempo de pantalla. ¡Invierte en la fe y la diversión de tu familia!
+            </p>
+        </section>
+        <!-- FIN: Sección de Comparación (Problema vs. Solución) -->
+
+
+<section class="mb-12 pt-8 bg-white">
+            <h2 class="text-3xl font-bold text-center mb-6 text-red-700">
+                ⭐⭐⭐⭐⭐ Lo Que Dicen Nuestros Clientes
+            </h2>
+            <p class="text-center text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+                Historias reales, fe compartida.
+            </p>
+
+            <div class="relative max-w-3xl mx-auto">
+                
+                <!-- Carrusel de Imágenes de Producto con Scroll-Snap -->
+                <div id="product-carousel" class="flex overflow-x-scroll scroll-smooth rounded-xl shadow-2xl border-4 border-red-200 aspect-video carousel-container">
+                    
+                    <div class="carousel-item p-4">
+                        <img src="https://i.imgur.com/r81WANa.png" alt="Vista previa de los 7 libros del Kit Biblia con Alegría" class="w-full h-full rounded-lg object-contain">
+                    </div>
+                    <div class="carousel-item p-4">
+                        <img src="https://i.imgur.com/qsXt58F.png" alt="Página de actividad de la Biblia para niños" class="w-full h-full rounded-lg object-contain">
+                    </div>
+                    <div class="carousel-item p-4">
+                        <img src="https://i.imgur.com/ADeVne9.png" alt="Página de la guía de técnicas creativas" class="w-full h-full rounded-lg object-contain">
+                    </div>
+                    <div class="carousel-item p-4">
+                        <img src="https://i.imgur.com/GpZmcU0.png" alt="Página de la Biblia para colorear de Jonás y el gran pez" class="w-full h-full rounded-lg object-contain">
+                    </div>
+                    <div class="carousel-item p-4">
+                        <img src="https://i.imgur.com/Uoy1urx.png" alt="Página de historia bíblica en formato cuento" class="w-full h-full rounded-lg object-contain">
+                    </div>
+                    <div class="carousel-item p-4">
+                        <img src="https://i.imgur.com/xI8o0mK.png" alt="Página de estrategias para padres" class="w-full h-full rounded-lg object-contain">
+                    </div>
+                </div>
+
+                
+                <button id="prev-btn" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-red-600 text-white p-3 rounded-full shadow-lg hover:bg-red-700 transition duration-300 z-10 opacity-70 hover:opacity-100 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                <button id="next-btn" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-red-600 text-white p-3 rounded-full shadow-lg hover:bg-red-700 transition duration-300 z-10 opacity-70 hover:opacity-100 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+                
+                <div id="carousel-dots" class="flex justify-center space-x-2 mt-4">
+                </div>
+            </div>
+        </section>
+        
+        
+        <!-- NUEVA SECCIÓN DE TESTIMONIOS/OPINIONES -->
+        <section class="mb-12 pt-4">
+            <h2 class="text-3xl font-bold text-center mb-4 text-gray-800">
+                <span class="text-red-600">✨</span> ¡Más de 100 Familias Felices!
+            </h2>
+            <p class="text-center text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+                Lee las experiencias de otros padres y maestros que ya están usando el Kit Biblia con Alegría:
+            </p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                
+                <!-- Testimonios (6 ejemplos) -->
+                <div class="testimonial-card">
+                    <div class="star-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="reviewer-name">Miquena S.</p>
+                    <p class="text-gray-700 text-sm italic">
+                        "Los materiales que recomiendan son fáciles de conseguir. No tuve que gastar una fortuna para empezar con las actividades. ¡Mis hijos lo aman!"
+                    </p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="star-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="reviewer-name">Catalina D.</p>
+                    <p class="text-gray-700 text-sm italic">
+                        "Siempre dejaba todo a medias. Esta vez no. El método de esta guía realmente te motiva a seguir hasta el final. ¡Hermoso y muy fácil de usar!"
+                    </p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="star-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="reviewer-name">Laila B.</p>
+                    <p class="text-gray-700 text-sm italic">
+                        "El paso a paso es tan detallado que no necesitás preguntar nada. Todo está ahí, clarito y hermoso. Es perfecto para mi clase de escuela dominical."
+                    </p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="star-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="reviewer-name">Mariela L.</p>
+                    <p class="text-gray-700 text-sm italic">
+                        "Compré la guía por curiosidad y terminé encontrando una nueva pasión para enseñar la fe. Estoy muy motivada para usar todos los recursos."
+                    </p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="star-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="reviewer-name">Mirtha M.</p>
+                    <p class="text-gray-700 text-sm italic">
+                        "Me ayudó a vencer el miedo de 'no tener talento' para enseñar. Me di cuenta de que cualquiera puede hacerlo si tiene una buena guía y herramientas prácticas."
+                    </p>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="star-rating">⭐⭐⭐⭐⭐</div>
+                    <p class="reviewer-name">Candela S.</p>
+                    <p class="text-gray-700 text-sm italic">
+                        "Mi mamá y yo lo hicimos juntas. Pasamos un fin de semana hermoso creando y riéndonos. ¡El tiempo de calidad con propósito es invaluable!"
+                    </p>
+                </div>
+
+            </div>
+            
+        </section>
+
+
+        
+        <!-- Garantía -->
+<section class="text-center p-6 bg-gray-100 rounded-xl mb-12 border-l-4 border-green-500 shadow-md">
+            <h2 class="text-2xl font-bold text-green-600 mb-3">
+                GARANTÍA DE LEGADO DE 7 DÍAS: CERO RIESGO PARA TI.
+            </h2>
+            <p class="text-gray-700">
+                Estamos tan seguros de que este kit transformará la forma en que enseñas la fe que asumimos todo el riesgo. Si dentro de 7 días no ves una conexión más profunda y un interés genuino en tus hijos, envíanos un email y te devolvemos el 100% de tu dinero.
+            </p>
+        </section>
+        
+        
+        <!-- FAQ -->
+<section class="mb-12">
+            <h2 class="text-4xl font-extrabold text-gray-800 text-center mb-10">
+                <span class="text-red-500">🙋‍♀️</span> Preguntas Frecuentes
+            </h2>
+
+            <div class="max-w-3xl mx-auto border-t border-gray-300">
+                
+                <details class="faq-details">
+                    <summary class="text-lg font-semibold text-gray-700 hover:text-red-600 transition duration-150">
+                        1. ¿Qué incluye el Kit BIBLIA CON ALEGRÍA?
+                    </summary>
+                    <div class="faq-content">
+                        El kit contiene 7 productos digitales diseñados para acercar a los niños a la Biblia de forma creativa y divertida. Incluye libros ilustrados, actividades para colorear, juegos con versículos, guías prácticas y más.
+                    </div>
+                </details>
+
+                <details class="faq-details">
+                    <summary class="text-lg font-semibold text-gray-700 hover:text-red-600 transition duration-150">
+                        2. ¿Está pensado solo para padres?
+                    </summary>
+                    <div class="faq-content">
+                        No. El kit es ideal para padres, abuelos, maestros, líderes de iglesia y cualquier persona que quiera sembrar valores bíblicos en la vida de los niños.
+                    </div>
+                </details>
+
+                <details class="faq-details">
+                    <summary class="text-lg font-semibold text-gray-700 hover:text-red-600 transition duration-150">
+                        3. ¿En qué formato vienen los productos?
+                    </summary>
+                    <div class="faq-content">
+                        Todos los recursos son digitales y vienen en formato PDF. Podés verlos desde tu celular, tablet o computadora, e imprimirlos si lo deseás.
+                    </div>
+                </details>
+
+                <details class="faq-details">
+                    <summary class="text-lg font-semibold text-gray-700 hover:text-red-600 transition duration-150">
+                        4. ¿Es adecuado para todas las edades?
+                    </summary>
+                    <div class="faq-content">
+                        Sí. Los contenidos están pensados para niños de entre 3 y 10 años, pero pueden adaptarse fácilmente según la edad y el nivel de comprensión.
+                    </div>
+                </details>
+
+                <details class="faq-details">
+                    <summary class="text-lg font-semibold text-gray-700 hover:text-red-600 transition duration-150">
+                        5. ¿Necesito conocimientos bíblicos para usarlo?
+                    </summary>
+                    <div class="faq-content">
+                        No. Cada recurso está diseñado para que cualquier adulto pueda guiar a los niños, incluso si no tiene experiencia previa enseñando la Biblia.
+                    </p>
+                    </div>
+                </details>
+
+                <details class="faq-details">
+                    <summary class="text-lg font-semibold text-gray-700 hover:text-red-600 transition duration-150">
+                        6. ¿Cómo recibo el kit después de comprarlo?
+                    </summary>
+                    <div class="faq-content">
+                        Una vez que realizás la compra a través de Hotmart, recibirás un correo con el acceso inmediato a una plataforma exclusiva donde podrás ver y descargar todos los materiales del kit. También podés acceder desde tu cuenta de Hotmart en cualquier momento. ¡Es rápido, seguro y muy fácil de usar!
+                    </div>
+                </details>
+
+                <details class="faq-details">
+                    <summary class="text-lg font-semibold text-gray-700 hover:text-red-600 transition duration-150">
+                        7. ¿Puedo usarlo en mi grupo de escuela dominical o ministerio infantil?
+                    </summary>
+                    <div class="faq-content">
+                        ¡Por supuesto! Muchos líderes lo usan como material base para clases, actividades grupales y eventos especiales.
+                    </div>
+                </details>
+
+                <details class="faq-details">
+                    <summary class="text-lg font-semibold text-gray-700 hover:text-red-600 transition duration-150">
+                        8. ¿Hay garantía o soporte si tengo dudas?
+                    </summary>
+                    <div class="faq-content">
+                        Sí. Si tenés alguna pregunta o problema con la descarga, podés escribirnos y te ayudamos rápido. Queremos que tengas una experiencia excelente.
+                    </p>
+                    </div>
+                </details>
+
+            </div>
+            
+            <!-- Botón de WhatsApp (¡CORREGIDO!) -->
+            <div class="mt-10 text-center">
+                <p class="text-lg font-semibold text-gray-800 mb-4">
+                    ¿Te quedó alguna otra duda? ¡Hablemos!
+                </p>
+                <a href="https://api.whatsapp.com/send?phone=5493518613109&text&context=AfdLcLTc7TV0EwQBc763l-vfvjhXlKLpcg9MdNkUT4N3k8FdX2KlWm86z5a7NOVW-ZFaDvAhwkQV3FIh-9kU9jDWPtKMZBYCI4B1UZcOZAq7HXMAsTBq_kjxYdM7Q_arf9g7KS0-unQ5lxBBI4HnnZQ&source&app=facebook" 
+                   target="_blank" 
+                   class="whatsapp-button inline-flex items-center justify-center py-3 px-8 text-xl font-extrabold text-white rounded-xl shadow-lg uppercase transition duration-300 ease-in-out transform hover:scale-105">
+                    <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12.04 2C7.03 2 3 6.03 3 11.04c0 1.74.5 3.37 1.41 4.8l-1.41 5.17l5.37-1.4c1.42.86 3.06 1.3 4.67 1.3c5.01 0 9.04-4.03 9.04-9.04C21.08 6.03 17.05 2 12.04 2zM12.04 19.33c-1.5 0-2.92-.4-4.14-1.16l-.29-.18l-3.13.82l.84-3.04l-.2-.31c-.81-1.25-1.24-2.73-1.24-4.26c0-4.1 3.3-7.4 7.4-7.4c2 0 3.86.78 5.27 2.18c1.41 1.41 2.18 3.27 2.18 5.27c0 4.1-3.3 7.4-7.4 7.4h-.01zm4.1-5.71l-.18-.1c-.42-.2-.25-.3-.36-.45c-.12-.14-.23-.17-.33.15c-.1.33-.37.4-.53.47c-.16.08-.3-.02-.43-.07c-.13-.06-1.14-.42-2.17-1.34c-.79-.7-1.32-1.57-1.47-1.83c-.15-.26-.02-.4-.02-.53c0-.12-.08-.2-.08-.37s.1-.28.15-.36c.05-.08.12-.16.18-.3c.06-.14.03-.26 0-.39c-.03-.12-.34-.81-.46-1.1s-.23-.3-.33-.3c-.1 0-.2.01-.3.01c-.1 0-.36.03-.55.23c-.19.2-.73.72-.73 1.77c0 1.05.75 2.05 1.05 2.45c.3.4 1.47 2.25 3.55 3.08c1.6.63 2.87.9 3.32.9c.7 0 1.07-.19 1.46-.46c.38-.28.42-.51.61-.79c.19-.28.19-.51.13-.62c-.06-.11-.22-.17-.46-.29z"/>
+                    </svg>
+                    COMUNICATE CON NOSOTROS
+                </a>
+            </div>
+            
+
+</section>
+        
+
+</main>
+    
+    <!-- SOLAPA DE CTA FLOTANTE INFERIOR (CRÍTICO: OPTIMIZACIÓN MÓVIL) -->
+    <div id="bottom-cta-bar" class="sticky-footer-cta slide-in-hidden">
+        <div class="max-w-4xl mx-auto flex justify-between items-center gap-2"> 
+            
+            <!-- Detalles del Producto (Imagen y Precio Tachado) -->
+            <div class="flex items-center gap-2 flex-1 min-w-0">
+                <img src="https://i.imgur.com/aM2oGnl.png" 
+                     alt="Kit Biblia con Alegría" 
+                     class="w-10 h-10 object-cover rounded-md shadow-md flex-shrink-0"
+                >
+                <div class="text-left leading-tight min-w-0">
+                    <p class="text-xs font-semibold text-gray-800 leading-tight truncate">KIT BIBLIA CON ALEGRÍA</p>
+                    <p class="text-[10px] text-gray-500 line-through leading-tight font-bold">$50 USD</p>
+                </div>
+            </div>
+
+            <!-- Precios y Botón -->
+            <div class="flex items-center justify-end gap-2 flex-shrink-0"> 
+                
+                <!-- Precios -->
+                <div class="flex items-center gap-1 flex-shrink-0">
+                    <span class="text-lg text-red-600 font-bold leading-none hidden sm:inline">OFERTA HOY:</span>
+                    <span class="text-xl sm:text-2xl font-black text-red-700 leading-none whitespace-nowrap">$6 USD</span>
+                </div>
+                
+                <!-- Botón de CTA (Compacto) -->
+                <a id="checkout-button-sticky" href="https://pay.hotmart.com/S102871118U?bid=1762797792657" 
+                   target="_blank" 
+                   class="green-btn text-white font-bold py-2 px-3 rounded-full text-center uppercase tracking-wide flex-shrink-0 text-sm sm:w-auto sm:text-lg hover:brightness-110">
+                    Comprar Ahora
+                </a>
+            </div>
+            
+             <!-- INICIO: CÓDIGO PARA EVENTO 'INITIATE CHECKOUT' (Botón inferior) -->
+            <script>
+                document.getElementById('checkout-button-sticky').addEventListener('click', function() {
+                    if (typeof fbq === 'function') {
+                        fbq('track', 'InitiateCheckout', {
+                            content_name: 'Kit Biblia con Alegría (Sticky)',
+                            content_category: 'Ebook',
+                            content_ids: ['KIT001_S'],
+                            value: 6.00,
+                            currency: 'USD'
+                        });
+                    }
+                });
+            </script>
+            <!-- FIN: CÓDIGO PARA EVENTO 'INITIATE CHECKOUT' (Botón inferior) -->
+        </div>
+    </div>
+
+
+    
+    <!-- Footer -->
+<footer class="text-center py-6 border-t border-gray-300 text-gray-600 text-sm">
+        <p>© 2024 Descubre la Biblia con Alegría. Todos los derechos reservados. Producto vendido a través de Hotmart.</p>
+    </footer>
+    
+    
+    <!-- Lógica JavaScript -->
+<script>
+        
+        // --- LÓGICA DEL CARRUSEL DE VISTAS PREVIAS (Para los que usan puntos) ---
+
+        function setupProductCarousel(carouselId, prevBtnId, nextBtnId, dotsId, dotActiveClass, dotInactiveClass) {
+            const carousel = document.getElementById(carouselId);
+            if (!carousel) return;
+            
+            const items = carousel.querySelectorAll('.carousel-item');
+            const prevBtn = document.getElementById(prevBtnId);
+            const nextBtn = document.getElementById(nextBtnId);
+            const dotsContainer = document.getElementById(dotsId);
+            let currentIndex = 0;
+
+            if (items.length === 0) return;
+
+            // 1. Genera los puntos indicadores
+            if (dotsContainer) {
+                dotsContainer.innerHTML = '';
+                items.forEach((_, index) => {
+                    const dot = document.createElement('span');
+                    dot.classList.add('w-3', 'h-3', 'rounded-full', 'cursor-pointer', 'transition-colors', 'duration-300', dotInactiveClass);
+                    dot.addEventListener('click', () => scrollToItem(index));
+                    dotsContainer.appendChild(dot);
+                });
+            }
+            const dots = dotsContainer ? dotsContainer.querySelectorAll('span') : [];
+
+            // 2. Función de desplazamiento
+            function scrollToItem(index) {
+                if (index >= 0 && index < items.length) {
+                    carousel.scrollTo({
+                        left: items[index].offsetLeft,
+                        behavior: 'smooth'
+                    });
+                    currentIndex = index;
+                    updateDots();
+                }
+            }
+
+            // 3. Navegación con botones
+            if (prevBtn) {
+                 prevBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // Permite el loop
+                    const newIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1; 
+                    scrollToItem(newIndex);
+                });
+            }
+
+            if (nextBtn) {
+                nextBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    // Permite el loop
+                    const newIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0; 
+                    scrollToItem(newIndex);
+                });
+            }
+            
+            // 4. Actualiza los puntos y el índice actual al desplazar (por el usuario)
+            carousel.addEventListener('scroll', () => {
+                const scrollLeft = carousel.scrollLeft;
+                const itemWidth = items[0] ? items[0].offsetWidth : 0;
+                
+                if (itemWidth === 0) return;
+
+                // Determina el índice más cercano al centro de la vista
+                const closestIndex = Math.round(scrollLeft / itemWidth);
+                
+                if (closestIndex !== currentIndex) {
+                    currentIndex = closestIndex;
+                    updateDots();
+                }
+            });
+
+            // 5. Función de actualización de puntos
+            function updateDots() {
+                dots.forEach((dot, index) => {
+                    dot.classList.remove(dotActiveClass, dotInactiveClass);
+                    if (index === currentIndex) {
+                        dot.classList.add(dotActiveClass);
+                    } else {
+                        dot.classList.add(dotInactiveClass);
+                    }
+                });
+            }
+            
+            // Estado inicial: muestra el primer punto activo
+            updateDots();
+        }
+
+        // --- LÓGICA DEL CARRUSEL DE LIBROS (Scroll de tarjetas) ---
+
+        function setupBookCarousel() {
+            const bookCarousel = document.getElementById('book-slider');
+            const prevBookBtn = document.getElementById('prev-book-btn');
+            const nextBookBtn = document.getElementById('next-book-btn');
+            
+            if (!bookCarousel || !prevBookBtn || !nextBookBtn) return;
+            
+            const bookItems = bookCarousel.querySelectorAll('.book-item');
+            
+            if (bookItems.length === 0) return;
+            
+            // La función de desplazamiento por un ancho de tarjeta
+            function scrollBookCarousel(direction) {
+                const itemWidth = bookItems[0].offsetWidth; 
+                const gapWidth = 24; // Tailwind space-x-6
+                const scrollAmount = itemWidth + gapWidth; 
+
+                let newScrollLeft;
+                
+                if (direction === 'prev') {
+                    newScrollLeft = bookCarousel.scrollLeft - scrollAmount;
+                    if (newScrollLeft < 0) {
+                        newScrollLeft = 0; 
+                    }
+                } else { // direction === 'next'
+                    newScrollLeft = bookCarousel.scrollLeft + scrollAmount;
+                    const maxScrollLeft = bookCarousel.scrollWidth - bookCarousel.clientWidth;
+                    if (newScrollLeft > maxScrollLeft) {
+                        newScrollLeft = maxScrollLeft;
+                    }
+                }
+
+                bookCarousel.scrollTo({
+                    left: newScrollLeft,
+                    behavior: 'smooth'
+                });
+            }
+
+            prevBookBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                scrollBookCarousel('prev');
+            });
+
+            nextBookBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                scrollBookCarousel('next');
+            });
+        }
+
+
+        // --- Inicialización General y Animación de Solapa ---
+        
+        window.onload = function() {
+            // Inicializa Carrusel de Vistas Previas (el rojo original)
+            setupProductCarousel(
+                'product-carousel', 
+                'prev-btn', 
+                'next-btn', 
+                'carousel-dots', 
+                'bg-red-700', 
+                'bg-red-300'
+            );
+
+            // Inicializa el NUEVO Carrusel de Vistas Internas (el azul)
+            setupProductCarousel(
+                'inner-view-carousel', 
+                'prev-inner-btn', 
+                'next-inner-btn', 
+                'inner-carousel-dots', 
+                'bg-blue-700', 
+                'bg-blue-300'
+            );
+            
+            // Inicializa Carrusel de Libros (el nuevo con flechas)
+            setupBookCarousel();
+            
+            // Animación de Solapa CTA Inferior (Deslizamiento)
+            const ctaBar = document.getElementById('bottom-cta-bar');
+            if (ctaBar) {
+                // Pequeño retraso para asegurar que la barra aparece después de la carga inicial
+                setTimeout(() => {
+                    ctaBar.classList.remove('slide-in-hidden'); 
+                }, 400); 
+            }
+        };
+    </script>
+
+</body>
+</html>
